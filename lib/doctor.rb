@@ -34,12 +34,12 @@ class Doctor
   end
 
   def update_specialty(new_specialty)
-    DB.exec("UPDATE doctor SET name = '#{new_specialty}' WHERE specialty = '#{@specialty}';")
+    DB.exec("UPDATE doctor SET specialty = '#{new_specialty}' WHERE specialty = '#{@specialty}';")
     @specialty = new_specialty
   end
 
   def update_insurance(new_insurance)
-    DB.exec("UPDATE doctor SET name = '#{new_insurance}' WHERE name = '#{@insurance}';")
+    DB.exec("UPDATE doctor SET insurance = '#{new_insurance}' WHERE name = '#{@insurance}';")
     @insurance = new_insurance
   end
 
