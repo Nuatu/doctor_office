@@ -21,17 +21,18 @@ class Doctor
     doctors
   end
 
-  # def self.doc_patient_count
-  #   doctors = []
-  #   results = DB.exec("SELECT * FROM doctor;")
-  #   results.each do |result|
-  #     doctors << Doctor.new(result)
-  #   end
-  #   doctors
-  # end
-
-  def patient_count
+  def patient_counter
     DB.exec("SELECT COUNT(*)FROM patient WHERE doctor_id = '#{@id}';").first['count']
+  end
+
+  def self.patient_count
+    doctors_patients = {}
+    doctors = self.all
+    doctors.each do |doctor|
+      p doctor
+      doctors_patients.store(doctor.name, doctor.patient_counter)
+    end
+    doctors_patients
   end
 
   def save
