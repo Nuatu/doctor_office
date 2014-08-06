@@ -30,6 +30,10 @@ class Doctor
   #   doctors
   # end
 
+  def patient_count
+    DB.exec("SELECT COUNT(*)FROM patient WHERE doctor_id = '#{@id}';").first['count']
+  end
+
   def save
     if @specialty_id == nil
       @id = DB.exec("INSERT INTO doctor(name, specialty_id, insurance_id) VALUES ('#{@name}', null, null) RETURNING id;").first['id'].to_i

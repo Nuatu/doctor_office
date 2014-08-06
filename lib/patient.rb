@@ -22,8 +22,12 @@ class Patient
   end
 
   def save
-    if @doctor_id == nil
+    if @doctor_id == nil and @birthdate == nil
       @id = DB.exec("INSERT INTO patient(name,birthdate,doctor_id) VALUES ('#{@name}', null, null) RETURNING id;").first['id'].to_i
+    elsif @doctor_id == nil
+      @id = DB.exec("INSERT INTO patient(name,birthdate,doctor_id) VALUES ('#{@name}', '#{@birthdate}', null) RETURNING id;").first['id'].to_i
+    elsif @birthdate == nil
+      @id = DB.exec("INSERT INTO patient(name,birthdate,doctor_id) VALUES ('#{@name}', null, '#{@doctor_id}') RETURNING id;").first['id'].to_i
     else
       @id = DB.exec("INSERT INTO patient(name,birthdate,doctor_id) VALUES ('#{@name}', '#{@birthdate}', '#{@doctor_id}') RETURNING id;").first['id'].to_i
     end
