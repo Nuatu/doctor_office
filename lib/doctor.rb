@@ -1,10 +1,11 @@
 class Doctor
-  attr_accessor :name, :specialty, :insurance
+  attr_accessor :name, :specialty_id, :insurance_id, :id
 
-  def initialize(name,specialty_id,insurance_id)
+  def initialize(name,specialty_id,insurance_id, id=nil)
     @name = name
-    @specialty = specialty_id
-    @insurance  = insurance_id
+    @specialty_id = specialty_id
+    @insurance_id  = insurance_id
+    @id = id
   end
 
   def ==(another_doctor)
@@ -15,13 +16,13 @@ class Doctor
     doctors = []
     results = DB.exec("SELECT * FROM doctor;")
     results.each do |result|
-      doctors << Doctor.new(result['name'], result['specialty'], result['insurance'])
+      doctors << Doctor.new(result['name'], result['specialty_id'], result['insurance_id'], result['id'])
     end
     doctors
   end
 
   def save
-    DB.exec("INSERT INTO doctor(name, specialty, insurance) VALUES ('#{@name}', '#{@specialty}', '#{@insurance}');")
+    @id = DB.exec("INSERT INTO doctor(name, specialty_id, insurance_id) VALUES ('#{@name}', '#{@specialty_id}', '#{@insurance_id}') RETURNING id;").first['id'].to_i
   end
 
   def delete
@@ -33,14 +34,14 @@ class Doctor
     @name = new_name
   end
 
-  def update_specialty(new_specialty)
-    DB.exec("UPDATE doctor SET specialty = '#{new_specialty}' WHERE specialty = '#{@specialty}';")
-    @specialty = new_specialty
+  def update_specialty_id(new_specialty_id)
+    DB.exec("UPDATE doctor SET specialty_id = #{new_specialty_id} WHERE specialty_id = '#{@specialty_id}';")
+    @specialty_id = new_specialty_id
   end
 
-  def update_insurance(new_insurance)
-    DB.exec("UPDATE doctor SET insurance = '#{new_insurance}' WHERE name = '#{@insurance}';")
-    @insurance = new_insurance
+  def update_insurance_id(new_insurance_id)
+    DB.exec("UPDATE doctor SET insurance_id = '#{new_insurance_id}' WHERE name = '#{@insurance_id}';")
+    @insurance_id = new_insurance_id
   end
 
 end

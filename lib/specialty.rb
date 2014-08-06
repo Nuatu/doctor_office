@@ -12,7 +12,7 @@ class Specialty
   end
 
   def save
-    @id = DB.exec("INSERT INTO specialty(name) VALUES ('#{@name}') RETURNING id;").first[id].to_i
+    @id = DB.exec("INSERT INTO specialty(name) VALUES ('#{@name}') RETURNING id;").first['id'].to_i
   end
 
   def delete
