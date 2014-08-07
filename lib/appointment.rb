@@ -45,10 +45,4 @@ class Appointment
     @cost = new_cost
   end
 
-  def billed(date1, date2)
-    DB.exec("SELECT SUM(cost) FROM appointment WHERE date BETWEEN TO_DATE ('#{date1}', 'yyyy/mm/dd') AND TO_DATE ('#{date2}', 'yyyy/mm/dd') AND doctor_id = '#{@id}';").first['cost'].to_i
-  end
-
 end
-
-# SELECT SUM(cost) FROM appointment WHERE date BETWEEN TO_DATE ('2003/01/01', 'yyyy/mm/dd') AND TO_DATE ('2015/12/31', 'yyyy/mm/dd') AND doctor_id = '1002';
