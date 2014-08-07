@@ -29,7 +29,6 @@ class Doctor
     doctors_patients = {}
     doctors = self.all
     doctors.each do |doctor|
-      p doctor
       doctors_patients.store(doctor.name, doctor.patient_counter)
     end
     doctors_patients
@@ -62,6 +61,9 @@ class Doctor
     @insurance_id = new_insurance_id
   end
 
+  def billed(date1, date2)
+    DB.exec("SELECT SUM(cost) FROM appointment WHERE date BETWEEN TO_DATE ('#{date1}', 'yyyy/mm/dd') AND TO_DATE ('#{date2}', 'yyyy/mm/dd') AND doctor_id = '#{@id}';").first['sum']
+  end
 end
 
 

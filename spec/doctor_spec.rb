@@ -80,4 +80,34 @@ describe 'Doctor' do
     expect(Doctor.patient_count == {"doctor1"=>"0", "doctor2"=>"1", "doctor3"=>"2"}).to eq true
   end
 
+  it 'shows amount doctor billed in a specific date range' do
+    new_doctor1 = Doctor.new({"name" => 'doctor1'})
+    new_doctor1.save
+    new_doctor2 = Doctor.new({"name" => 'doctor2'})
+    new_doctor2.save
+    new_doctor3 = Doctor.new({"name" => 'doctor3'})
+    new_doctor3.save
+    new_patient1 = Patient.new({"name" => 'n1', "doctor_id" => new_doctor2.id.to_i})
+    new_patient1.save
+    new_patient2 = Patient.new({"name" => 'n2', "doctor_id" => new_doctor3.id.to_i})
+    new_patient2.save
+    new_patient3 = Patient.new({"name" => 'n3', "doctor_id" => new_doctor3.id.to_i})
+    new_patient3.save
+    new_appointment1 = Appointment.new({'patient_id' => new_patient1.id.to_i, 'doctor_id' => new_doctor1.id.to_i, 'date' => '2014-01-01', 'cost' => '$10.00' })
+    new_appointment1.save
+    new_appointment2 = Appointment.new({'patient_id' => new_patient2.id.to_i, 'doctor_id' => new_doctor2.id.to_i, 'date' => '2015-01-01', 'cost' => '$20.00'})
+    new_appointment2.save
+    new_appointment3 = Appointment.new({'patient_id' => new_patient3.id.to_i, 'doctor_id' => new_doctor3.id.to_i, 'date' => '2016-01-01', 'cost' => '$30.00' })
+    new_appointment3.save
+    new_appointment4 = Appointment.new({'patient_id' => new_patient1.id.to_i, 'doctor_id' => new_doctor2.id.to_i, 'date' => '2014-01-01', 'cost' => '$10.00' })
+    new_appointment4.save
+    new_appointment5 = Appointment.new({'patient_id' => new_patient2.id.to_i, 'doctor_id' => new_doctor3.id.to_i, 'date' => '2015-01-01', 'cost' => '$20.00'})
+    new_appointment5.save
+    new_appointment6 = Appointment.new({'patient_id' => new_patient3.id.to_i, 'doctor_id' => new_doctor3.id.to_i, 'date' => '2016-01-01', 'cost' => '$30.00' })
+    new_appointment6.save
+    expect(new_doctor1.billed('2013-01-01', '2015-01-01')).to eq '$10.00'
+    expect(new_doctor2.billed('2014-01-01', '2015-01-01')).to eq '$30.00'
+    expect(new_doctor3.billed('2016-01-01', '2016-01-01')).to eq '$60.00'
+
+  end
 end
