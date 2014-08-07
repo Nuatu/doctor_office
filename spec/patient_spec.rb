@@ -44,4 +44,19 @@ describe 'Patient' do
     expect(Patient.all).to eq []
   end
 
+  it 'lets you search for a patient by name' do
+    new_doctor1 = Doctor.new({"name" => 'doctor1'})
+    new_doctor1.save
+    new_doctor2 = Doctor.new({"name" => 'doctor2'})
+    new_doctor2.save
+    new_doctor3 = Doctor.new({"name" => 'doctor3'})
+    new_doctor3.save
+    new_patient1 = Patient.new({"name" => 'n1', "doctor_id" => new_doctor2.id.to_i})
+    new_patient1.save
+    new_patient2 = Patient.new({"name" => 'n2', "doctor_id" => new_doctor3.id.to_i})
+    new_patient2.save
+    new_patient3 = Patient.new({"name" => 'n3', "doctor_id" => new_doctor3.id.to_i})
+    new_patient3.save
+    expect(Patient.search('n1') == new_patient1).to eq true
+  end
 end

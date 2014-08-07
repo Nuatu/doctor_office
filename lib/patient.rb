@@ -21,6 +21,10 @@ class Patient
     patients
   end
 
+  def self.search(name)
+     Patient.new(DB.exec("SELECT * FROM patient WHERE name = '#{name}';").first)
+  end
+
   def save
     if @doctor_id == nil and @birthdate == nil
       @id = DB.exec("INSERT INTO patient(name,birthdate,doctor_id) VALUES ('#{@name}', null, null) RETURNING id;").first['id'].to_i
